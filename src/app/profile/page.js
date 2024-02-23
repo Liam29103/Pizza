@@ -1,40 +1,74 @@
 "use client";
 
+import InfoBox from "@/components/layout/InfoBox";
+import SuccessBox from "@/components/layout/SuccessBox";
+import UserTabs from "@/components/layout/UserTabs";
+import {set} from "mongoose";
 import {useSession} from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import {redirect} from "next/navigation";
 import {useEffect, useState} from "react";
+import toast from "react-hot-toast";
 
 export default function ProfilePage() {
     const session = useSession();
     console.log(session);
     const [userName, setUserName] = useState("");
     const [image, setImage] = useState("");
-    const [saved, setSaved] = useState(false);
-    const [isSaving, setIsSaving] = useState(false);
-    const [isUploading, setIsUploading] = useState(false);
+    const [phone, setPhone] = useState("");
+    const [streetAddress, setStreetAddress] = useState("");
+    const [postalCode, setPostalCode] = useState("");
+    const [city, setCity] = useState("");
+    const [country, setCountry] = useState("");
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [profileFetched, setProfileFetched] = useState(false);
     const {status} = session;
 
     useEffect(() => {
         if (status === "authenticated") {
             setUserName(session.data.user.name);
             setImage(session.data.user.image);
+            fetch("/api/profile").then((response) => {
+                response.json().then((data) => {
+                    setPhone(data.phone);
+                    setStreetAddress(data.streetAddress);
+                    setPostalCode(data.postalCode);
+                    setCity(data.city);
+                    setCountry(data.country);
+                    setIsAdmin(data.admin);
+                    setProfileFetched(true);
+                });
+            });
         }
     }, [session, status]);
 
     async function handleProfileInfoUpdate(ev) {
         ev.preventDefault();
-        setSaved(false);
-        setIsSaving(true);
-        const response = await fetch("/api/profile", {
-            method: "PUT",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({name: userName, image}),
+
+        const savingPromise = new Promise(async (resolve, reject) => {
+            const response = await fetch("/api/profile", {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    name: userName,
+                    image,
+                    streetAddress,
+                    phone,
+                    postalCode,
+                    city,
+                    country,
+                }),
+            });
+            if (response.ok) resolve();
+            else reject();
         });
-        setIsSaving(false);
-        if (response.ok) {
-            setSaved(true);
-        }
+
+        await toast.promise(savingPromise, {
+            loading: "Saving...",
+            success: "profile Saved!",
+            error: "Failed to save.",
+        });
     }
 
     async function handleFileChange(ev) {
@@ -42,18 +76,28 @@ export default function ProfilePage() {
         if (files?.length === 1) {
             const data = new FormData();
             data.append("file", files[0]);
-            setIsUploading(true);
-            const response = await fetch("/api/upload", {
+
+            const uploadPromise = fetch("/api/upload", {
                 method: "POST",
                 body: data,
+            }).then((response) => {
+                if (response.ok) {
+                    return response.json().then((link) => {
+                        setImage(link);
+                    });
+                }
+                throw new Error("Something went wrong");
             });
-            const link = await response.json();
-            setImage(link);
-            setIsUploading(false);
+
+            await toast.promise(uploadPromise, {
+                loading: "Uploading...",
+                success: "Uploaded!",
+                error: "Failed to upload.",
+            });
         }
     }
 
-    if (status === "loading") {
+    if (status === "loading" || !profileFetched) {
         return "Loading...";
     }
 
@@ -62,14 +106,10 @@ export default function ProfilePage() {
     }
 
     return (
-        <section className="mt-8">
-            <h1 className="text-center text-primary text-4xl mb-4">Profile</h1>
-
+        <section className="mt-8 ">
+            <UserTabs isAdmin={isAdmin} />
             <div className="max-w-md mx-auto">
-                {saved && <h2 className="text-center bg-green-200 p-4 rounded-lg">Profile saved!</h2>}
-                {isSaving && <h2 className="text-center bg-blue-200 p-4 rounded-lg">Saving...</h2>}
-                {isUploading && <h2 className="text-center bg-blue-200 p-4 rounded-lg">Uploading...</h2>}
-                <div className=" flex gap-4 items-center">
+                <div className=" flex gap-2 ">
                     <div>
                         <div className=" p-2 rounded-lg relative max-w-[120px]">
                             {image && <Image className="rounded-lg w-full h-full mb-1" src={image} width={250} height={250} alt={"avatar"} />}
@@ -80,8 +120,26 @@ export default function ProfilePage() {
                         </div>
                     </div>
                     <form className="grow" onSubmit={handleProfileInfoUpdate}>
-                        <input type="text" placeholder="First and last name" value={userName} onChange={(ev) => setUserName(ev.target.value)}></input>
-                        <input type="email" disabled={true} value={session.data.user.email}></input>
+                        <label>First and last name</label>
+                        <input type="text" placeholder="First and last name" value={userName} onChange={(ev) => setUserName(ev.target.value)} />
+                        <label>Email</label>
+                        <input type="email" disabled={true} value={session.data.user.email} placeholder={"email"} />
+                        <label>Phone</label>
+                        <input type="tel" placeholder="Phone number" value={phone} onChange={(ev) => setPhone(ev.target.value)} />
+                        <label>Street Address</label>
+                        <input type="text" placeholder="Street address" value={streetAddress} onChange={(ev) => setStreetAddress(ev.target.value)} />
+                        <div className="flex gap-4">
+                            <div>
+                                <label>Postal code</label>
+                                <input type="text" placeholder="Postal code" value={postalCode} onChange={(ev) => setPostalCode(ev.target.value)} />
+                            </div>
+                            <div>
+                                <label>City</label>
+                                <input type="text" placeholder="City" value={city} onChange={(ev) => setCity(ev.target.value)} />
+                            </div>
+                        </div>
+                        <label>Country</label>
+                        <input type="text" placeholder="Country" value={country} onChange={(ev) => setCountry(ev.target.value)} />
                         <button type="submit">Save</button>
                     </form>
                 </div>
