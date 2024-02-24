@@ -1,5 +1,6 @@
 "use client";
 
+import EditableImage from "@/components/layout/EditableImage";
 import InfoBox from "@/components/layout/InfoBox";
 import SuccessBox from "@/components/layout/SuccessBox";
 import UserTabs from "@/components/layout/UserTabs";
@@ -71,32 +72,6 @@ export default function ProfilePage() {
         });
     }
 
-    async function handleFileChange(ev) {
-        const files = ev.target.files;
-        if (files?.length === 1) {
-            const data = new FormData();
-            data.append("file", files[0]);
-
-            const uploadPromise = fetch("/api/upload", {
-                method: "POST",
-                body: data,
-            }).then((response) => {
-                if (response.ok) {
-                    return response.json().then((link) => {
-                        setImage(link);
-                    });
-                }
-                throw new Error("Something went wrong");
-            });
-
-            await toast.promise(uploadPromise, {
-                loading: "Uploading...",
-                success: "Uploaded!",
-                error: "Failed to upload.",
-            });
-        }
-    }
-
     if (status === "loading" || !profileFetched) {
         return "Loading...";
     }
@@ -112,11 +87,7 @@ export default function ProfilePage() {
                 <div className=" flex gap-2 ">
                     <div>
                         <div className=" p-2 rounded-lg relative max-w-[120px]">
-                            {image && <Image className="rounded-lg w-full h-full mb-1" src={image} width={250} height={250} alt={"avatar"} />}
-                            <label>
-                                <input type="file" className="hidden" onChange={handleFileChange} />
-                                <span className="block border rounded-lg p-2 text-center border-gray-300 cursor-pointer">Edit</span>
-                            </label>
+                            <EditableImage link={image} setLink={setImage} />
                         </div>
                     </div>
                     <form className="grow" onSubmit={handleProfileInfoUpdate}>
