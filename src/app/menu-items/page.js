@@ -22,7 +22,7 @@ export default function MenuItemsPage() {
 
     if (!data.admin) return "Not an admin";
     return (
-        <section className="mt-8 max-w-md mx-auto">
+        <section className="mt-8 max-w-2xl mx-auto">
             <UserTabs isAdmin={true} />
             <div className="mt-8">
                 <Link className="button flex" href={"/menu-items/new"}>
@@ -37,7 +37,7 @@ export default function MenuItemsPage() {
                             <>
                                 <Link href={"/menu-items/edit/" + item._id} className="bg-gray-200 rounded-lg p-4">
                                     <div className="relative">
-                                        <Image className="rounded-full" src={item.image} atl={""} width={200} height={200}></Image>
+                                        <Image className="rounded-full" src={item.image} atl={""} width={200} height={200} />
                                     </div>
                                     <div className="text-center">{item.name}</div>
                                 </Link>

@@ -8,6 +8,7 @@ import Link from "next/link";
 import {useState} from "react";
 import toast from "react-hot-toast";
 import MenuItemForm from "@/components/layout/MenuItemForm";
+import DeleteButton from "@/components/DeleteButton";
 
 export default function NewMenuItemPage() {
     const [redirectToItems, setRedirectToItems] = useState(false);
@@ -46,7 +47,7 @@ export default function NewMenuItemPage() {
     }
 
     return (
-        <section className="mt-8 max-w-md mx-auto">
+        <section className="mt-8 max-w-2xl mx-auto">
             <UserTabs isAdmin={true} />
             <div className="max-w-md mx-auto mt-8">
                 <Link href={"/menu-items"} className="button">

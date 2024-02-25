@@ -19,7 +19,7 @@ export const authOptions = {
             name: "Credentials",
             id: "credentials",
             credentials: {
-                username: {label: "Email", type: "email", placeholder: "test@gmail.com"},
+                username: {label: "Email", type: "email", placeholder: "test@example.com"},
                 password: {label: "Password", type: "password"},
             },
             async authorize(credentials, req) {
@@ -29,7 +29,7 @@ export const authOptions = {
                 mongoose.connect(process.env.MONGO_URL);
                 const user = await User.findOne({email});
                 const passwordOk = user && bcrypt.compareSync(password, user.password);
-                console.log({passwordOk});
+
                 if (passwordOk) {
                     return user;
                 }
@@ -39,6 +39,19 @@ export const authOptions = {
         }),
     ],
 };
+
+export async function isAdmin() {
+    const session = await getServerSession(authOptions);
+    const userEmail = session?.user?.email;
+    if (!userEmail) {
+        return false;
+    }
+    const userInfo = await UserInfo.findOne({email: userEmail});
+    if (!userInfo) {
+        return false;
+    }
+    return userInfo.admin;
+}
 
 const handler = NextAuth(authOptions);
 

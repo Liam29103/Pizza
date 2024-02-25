@@ -1,8 +1,7 @@
 "use client";
-import AddressInputs from "@/components/layout/AddressInputs";
 import EditableImage from "@/components/layout/EditableImage";
-import {useProfile} from "@/components/UseProfile";
 import {useState} from "react";
+import {UserProfile} from "../UserProfile";
 
 export default function UserForm({user, onSave}) {
     const [userName, setUserName] = useState(user?.name || "");
@@ -13,7 +12,7 @@ export default function UserForm({user, onSave}) {
     const [city, setCity] = useState(user?.city || "");
     const [country, setCountry] = useState(user?.country || "");
     const [admin, setAdmin] = useState(user?.admin || false);
-    const {data: loggedInUserData} = useProfile();
+    const {data: loggedInUserData} = UserProfile();
 
     function handleAddressChange(propName, value) {
         if (propName === "phone") setPhone(value);
@@ -48,15 +47,22 @@ export default function UserForm({user, onSave}) {
                 <input type="text" placeholder="First and last name" value={userName} onChange={(ev) => setUserName(ev.target.value)} />
                 <label>Email</label>
                 <input type="email" disabled={true} value={user.email} placeholder={"email"} />
-                <AddressInputs addressProps={{phone, streetAddress, postalCode, city, country}} setAddressProp={handleAddressChange} />
-                {loggedInUserData.admin && (
+                <label>Phone</label>
+                <input type="tel" placeholder="Phone number" value={phone} onChange={(ev) => setPhone(ev.target.value)} />
+                <label>Street Address</label>
+                <input type="text" placeholder="Street address" value={streetAddress} onChange={(ev) => setStreetAddress(ev.target.value)} />
+                <div className="flex gap-4">
                     <div>
-                        <label className="p-2 inline-flex items-center gap-2 mb-2" htmlFor="adminCb">
-                            <input id="adminCb" type="checkbox" className="" value={"1"} checked={admin} onChange={(ev) => setAdmin(ev.target.checked)} />
-                            <span>Admin</span>
-                        </label>
+                        <label>Postal code</label>
+                        <input type="text" placeholder="Postal code" value={postalCode} onChange={(ev) => setPostalCode(ev.target.value)} />
                     </div>
-                )}
+                    <div>
+                        <label>City</label>
+                        <input type="text" placeholder="City" value={city} onChange={(ev) => setCity(ev.target.value)} />
+                    </div>
+                </div>
+                <label>Country</label>
+                <input type="text" placeholder="Country" value={country} onChange={(ev) => setCountry(ev.target.value)} />
                 <button type="submit">Save</button>
             </form>
         </div>
