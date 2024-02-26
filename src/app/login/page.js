@@ -21,11 +21,11 @@ export default function LoginPage() {
         <section className="mt-8">
             <h1 className="text-center text-primary text-4xl mb-4">Login</h1>
             <form className="max-w-xs mx-auto" onSubmit={handleFormSubmit}>
-                <input type="email" name="email" placeholder="email" value={email} disabled={loginInProgress} onChange={(ev) => setEmail(ev.target.value)} />
+                <input type="email" name="email" placeholder="Email" value={email} disabled={loginInProgress} onChange={(ev) => setEmail(ev.target.value)} />
                 <input
                     type="password"
                     name="password"
-                    placeholder="password"
+                    placeholder="Password"
                     value={password}
                     disabled={loginInProgress}
                     onChange={(ev) => setPassword(ev.target.value)}
