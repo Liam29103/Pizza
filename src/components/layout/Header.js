@@ -33,7 +33,7 @@ export default function Header() {
                         <Link href={"/profile"} className="whitespace-nowrap">
                             Hello, {userName}
                         </Link>
-                        <button onClick={() => signOut()} className="bg-primary rounded-full text-white px-7 py-2">
+                        <button onClick={() => signOut()} className="bg-primary border-primary rounded-full text-white px-7 py-2">
                             LogOut
                         </button>
                     </>
