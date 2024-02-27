@@ -3,6 +3,7 @@ import Image from "next/image";
 import MenuItem from "../menu/MenuItem";
 import SectionHeaders from "./SectionHeaders";
 import {useEffect, useState} from "react";
+
 export default function HomeMenu() {
     const [bestSellers, setBestSellers] = useState([]);
     useEffect(() => {
