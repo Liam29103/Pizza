@@ -58,7 +58,7 @@ export default function RegisterPage() {
                     Login with google
                 </button>
                 <div className="text-center my-4 border-t pt-4 text-gray-500">
-                    Existing account?{" "}
+                    Existing account?
                     <Link className=" underline" href={"/login"}>
                         Login here &raquo;
                     </Link>
