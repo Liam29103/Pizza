@@ -27,7 +27,7 @@ export default function MenuItemForm({onSubmit, menuItem}) {
         <form
             onSubmit={(ev) => onSubmit(ev, {image, name, description, basePrice, sizes, extraIngredientPrices, category})}
             className="mt-8 max-w-2xl max-auto">
-            <div className="grid items-start gap-4" style={{gridTemplateColumns: ".3fr .7fr"}}>
+            <div className="md:grid items-start gap-4" style={{gridTemplateColumns: ".3fr .7fr"}}>
                 <div>
                     <EditableImage link={image} setLink={setImage} />
                 </div>
