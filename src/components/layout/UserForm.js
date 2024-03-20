@@ -48,7 +48,7 @@ export default function UserForm({user, onSave}) {
                 <input type="text" placeholder="First and last name" value={userName} onChange={(ev) => setUserName(ev.target.value)} />
                 <label>Email</label>
                 <input type="email" disabled={true} value={user?.email} placeholder={"email"} />
-                <AddressInputs addressProps={{phone, streetAddress, postalCode, city, country}} setAddressProps={handleAddressChange} />
+                <AddressInputs addressProps={{phone, streetAddress, postalCode, city, country}} setAddressProp={handleAddressChange} />
                 {loggedInUserData.admin && (
                     <div>
                         <label className="p-2 inline-flex items-center gap-2 mb-2" htmlFor="adminCb">

@@ -5,7 +5,7 @@ import SectionHeaders from "@/components/layout/SectionHeaders";
 
 export default function Home() {
     return (
-        <>
+        <div className="flex flex-col min-h-screen">
             <Hero />
             <HomeMenu />
             <section className="text-center my-16" id="about">
@@ -30,6 +30,6 @@ export default function Home() {
                     </a>
                 </div>
             </section>
-        </>
+        </div>
     );
 }

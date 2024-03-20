@@ -51,3 +51,13 @@ div.tabs > *.active {
 .flying-button-parent button {
     @apply rounded-full border-primary bg-primary text-white;
 }
+
+.full-screen {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    height: 100%;
+}
