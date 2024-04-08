@@ -22,14 +22,6 @@ export default function Home() {
                     <p>Laborum molestias neque nulla obcaecati odio quia quod reprehenderit sit vitae voluptates? Eos, tenetur.</p>
                 </div>
             </section>
-            <section className="text-center my-8" id="contact">
-                <SectionHeaders subHeader={"Don't hesitate"} mainHeader={"Contact us"} />
-                <div className="mt-8">
-                    <a className="text-4xl underline text-gray-400" href="tel:+84368305342">
-                        +84368305342
-                    </a>
-                </div>
-            </section>
         </div>
     );
 }

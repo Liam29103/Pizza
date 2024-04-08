@@ -62,7 +62,7 @@ export default function ProfilePage() {
     return (
         <section className="mt-8">
             <UserTabs isAdmin={isAdmin} />
-            <div className="max-w-2xl mx-auto mt-8">
+            <div className="max-w-2xl mx-auto my-2 mt-8">
                 <UserForm user={user} onSave={handleProfileInfoUpdate} />
             </div>
         </section>

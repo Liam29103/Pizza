@@ -54,10 +54,28 @@ div.tabs > *.active {
 
 .full-screen {
     height: 100%;
+    width: 100%;
     margin: 0;
     padding: 0;
 }
 
 #root {
     height: 100%;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333; /* Màu nền của footer */
+    color: #fff; /* Màu chữ của footer */
+    padding: 20px; /* Khoảng cách padding bên trong footer */
+}
+
+.footer-item {
+    margin-right: 20px; /* Khoảng cách giữa các phần tử trong footer */
+}
+
+.footer-item:last-child {
+    margin-right: 0; /* Không có margin phải cho phần tử cuối cùng */
 }
