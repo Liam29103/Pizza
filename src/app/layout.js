@@ -34,8 +34,8 @@ export default function RootLayout({children}) {
                                     <section id="contact">
                                         <SectionHeaders subHeader="Don't hesitate" mainHeader="Contact us" />
                                         <div className="mt-8">
-                                            <a className="text-4xl underline text-gray-400" href="tel:+84368305342">
-                                                +84368305342
+                                            <a className="text-2xl text-gray-400" href="tel:+84368305342">
+                                                +84 368 305 342
                                             </a>
                                         </div>
                                         {/* Sử dụng Font Awesome để hiển thị biểu tượng Facebook và Instagram */}
